@@ -1,0 +1,11 @@
+bank-statement-processor/
+    src/
+        main/
+            java/dev/bankstatement/fileprocessing/
+                controller/
+                service/
+                model/
+                repository/
+                config/
+            resources/
+                application.properties
