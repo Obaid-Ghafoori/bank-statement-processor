@@ -4,7 +4,6 @@ import dev.bankstatement.fileprocessing.config.JwtTokenProvider;
 import dev.bankstatement.fileprocessing.model.User;
 import dev.bankstatement.fileprocessing.service.UserService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,13 +22,25 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/auth")
-@AllArgsConstructor
-@RequiredArgsConstructor
 public sealed abstract class AuthController permits PasswordResetController{
 
-    private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
+    private  UserService userService;
+    private  JwtTokenProvider jwtTokenProvider;
+    private  AuthenticationManager authenticationManager;
+
+    /**
+     * Constructs an instance of the AuthController class.
+     *
+     * @param userService the user service instance
+     * @param jwtTokenProvider the JWT token provider instance
+     * @param authenticationManager the authentication manager instance
+     */
+    public AuthController(UserService userService, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManager = authenticationManager;
+    }
+
 
     /**
      * Handles user registration requests.
