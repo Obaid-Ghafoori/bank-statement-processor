@@ -49,7 +49,7 @@ class PasswordResetController {
 class Role {
   - id: integer
   - name: string
-  - description: string
+  - user: Set<User>
 }
 
 class RoleRepository {
@@ -66,7 +66,7 @@ class SecurityConfig {
   + removeRole(role: Role): void
 }
 
-User --* Role : "has roles"
+
 User "uses" --* UserRepository : "repository for"
 UserService "depends on" --* UserRepository : "user data"
 UserService "uses" --* JwtTokenProvider : "token provider"
@@ -76,6 +76,8 @@ AuthController "uses" --* AuthenticationManager : "auth manager"
 AuthController <|-- "extends" PasswordResetController
 RoleRepository --* Role : "manages"
 SecurityConfig --* Role : "has roles"
+Role --* User : "has users"
+User --* Role : "has roles"
 
 note "User Registration and Login" as N1
 N1 ..> AuthController
