@@ -7,7 +7,6 @@ import lombok.ToString;
 import org.springframework.security.authentication.AuthenticationManager;
 
 /**
- *
  * This class extends the AuthController and provides a password reset endpoint.
  *
  * @author Obaid
@@ -19,14 +18,12 @@ public non-sealed class PasswordResetController extends AuthController {
     /**
      * Constructor for PasswordResetController.
      *
-     * @param userService        user service instance
-     * @param jwtTokenProvider  JWT token provider instance
+     * @param jwtTokenProvider      JWT token provider instance
      * @param authenticationManager authentication manager instance
      */
-    public PasswordResetController(UserService userService, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
-        super(userService, jwtTokenProvider, authenticationManager);
+    public PasswordResetController(JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+        super(jwtTokenProvider, authenticationManager);
     }
-
 
 
 }

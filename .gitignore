@@ -40,3 +40,6 @@ mvnw.cmd
 ### ENV ###
 .env
 
+application.properties
+.application.properties
+

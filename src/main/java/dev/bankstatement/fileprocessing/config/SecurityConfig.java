@@ -8,18 +8,39 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security configuration class for the application.
+ * <p>
+ * This class provides security-related configurations for the application, including:
+ * <ul>
+ *     <li>Security filter chain configuration</li>
+ *     <li>Password encryption using BCryptPasswordEncoder</li>
+ *     <li>User details service configuration</li>
+ * </ul>
+ *
+ * @author Obaid
+ */
 @Configuration
 public class SecurityConfig {
 
+    /**
+     * Configures the security filter chain for the application.
+     * <p>
+     * This method creates a security filter chain that disables CSRF protection,
+     * configures authorization for HTTP requests, and sets up form-based login and logout.
+     *
+     * @param http the HttpSecurity object to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/register").permitAll() // Public routes
+                        .requestMatchers("/api/auth/welcome", "/api/auth/register", "/login").permitAll() // Public routes
                         .requestMatchers("/admin/**").hasRole("ADMIN") // Only for ADMIN role
                         .anyRequest().authenticated() // All other routes require authentication
                 )
@@ -33,12 +54,23 @@ public class SecurityConfig {
         return http.build();
     }
 
-
+    /**
+     * Configures a bean to secure user passwords using BCryptPasswordEncoder.
+     *
+     * @return a secured password encrypted with BCryptPasswordEncoder
+     */
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Using BCrypt for password hashing
+        return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures the user details service for the application.
+     * <p>
+     * This method returns an InMemoryUserDetailsManager instance, which provides user details for authentication.
+     *
+     * @return the user details service
+     */
     @Bean
     public UserDetailsService userDetailsService() {
         // In-memory user details, can be replaced with JDBC, LDAP, etc.

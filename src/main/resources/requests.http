@@ -1,0 +1,12 @@
+### Register a new user
+
+POST http://localhost:8081/api/auth/register
+Content-Type: application/x-www-form-urlencoded
+
+username=newUser&password=password123&role=ROLE_USER
+
+
+curl -X POST http://localhost:8081/api/auth/register \
+     -H "Content-Type: application/x-www-form-urlencoded" \
+     -d "username=newUser&password=password123&role=ROLE_USER"
+
