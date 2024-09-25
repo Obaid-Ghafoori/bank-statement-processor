@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Provides functionality for generating, resolving, and validating JSON Web Tokens (JWTs) used for authentication.
- * 
+ *
  * @author Obaid
  */
 @Component
@@ -19,9 +19,9 @@ public class JwtTokenProvider {
 
     /**
      * Generates a new JWT token based on the provided username and roles.
-     * 
+     *
      * @param username the username to associate with the token
-     * @param roles the roles to associate with the token
+     * @param roles    the roles to associate with the token
      * @return a new JWT token as a string
      */
     public String createToken(String username, List<String> roles) {
@@ -42,7 +42,7 @@ public class JwtTokenProvider {
 
     /**
      * Extracts the JWT token from the Authorization header of the provided HTTP request.
-     * 
+     *
      * @param request the HTTP request to extract the token from
      * @return the extracted JWT token, or null if not found
      */
@@ -56,7 +56,7 @@ public class JwtTokenProvider {
 
     /**
      * Validates a JWT token by checking its signature and expiration date.
-     * 
+     *
      * @param token the JWT token to validate
      * @return true if the token is valid, false otherwise
      * @throws IllegalArgumentException if the token is invalid

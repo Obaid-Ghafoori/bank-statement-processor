@@ -1,13 +1,15 @@
 package dev.bankstatement.fileprocessing.service;
 
-import dev.bankstatement.fileprocessing.model.Role;
 import dev.bankstatement.fileprocessing.model.User;
+import dev.bankstatement.fileprocessing.repository.RoleRepository;
 import dev.bankstatement.fileprocessing.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -16,20 +18,24 @@ import java.util.Set;
 public class UserService {
     @Autowired
     private final UserRepository userRepository;
-
+    @Autowired
+    private final RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
 
-    public User registerUser(String username, String password, Set<Role> roles){
-        if(userRepository.findByUsername(username).isPresent()){
+    @Transactional
+    public User registerUser(String username, String password, String roleName) {
+        if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("User already exists");
         }
 
         var user = new User();
         user.setUsername(username);
-        user.setPassword(password);
-        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(password));
+
+        var role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+        user.setRoles(new HashSet<>(Set.of(role)));
         return userRepository.save(user);
     }
 
@@ -39,7 +45,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findByUsername(String username){
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    public String welcomeMessage() {
+        return "Welcome to the Bank Statement Processing Application!";
     }
 }

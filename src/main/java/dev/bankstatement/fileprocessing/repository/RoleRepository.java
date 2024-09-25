@@ -1,7 +1,6 @@
 package dev.bankstatement.fileprocessing.repository;
 
 import dev.bankstatement.fileprocessing.model.Role;
-import dev.bankstatement.fileprocessing.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -16,10 +15,10 @@ import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
     /**
-     * Finds a role by their username.
+     * Finds a role by their name.
      *
-     * @param username the username to search for
+     * @param name the name to search for
      * @return an Optional containing the role if found, or an empty Optional if not found
      */
-    Optional<Role> findByUsername(String username);
+    Optional<Role> findByName(String name);
 }

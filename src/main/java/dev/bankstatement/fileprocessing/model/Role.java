@@ -18,7 +18,7 @@ public class Role {
     private Long id;
 
     @Column(nullable = false, unique = true, name = "user_name")
-    private String username;
+    private String name;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
