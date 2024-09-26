@@ -97,12 +97,12 @@ class UserServiceTest {
 
         when(userRepository.findByUsername("Tom")).thenReturn(Optional.of(existingUser));  // User already exists
 
-        // Act & Assert using AssertJ
+        // Act & Assert
         assertThatThrownBy(() -> userService.registerUser("Tom", "1234ojd", "ROLE_USER"))
                 .isInstanceOf(RuntimeException.class)
                 .hasMessageContaining("User already exists with username: Tom");
 
-        // Verify userRepository.save() is never called since the user already exists
+        // Verify
         verify(userRepository, never()).save(any(User.class));
     }
 
