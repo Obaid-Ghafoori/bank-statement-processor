@@ -46,7 +46,7 @@ class UserServiceTest {
         role.setName("ROLE_USER");
         user.setRoles(Set.of(role));
 
-        // Mocking the behavior of repositories and encoder
+        // Mocking the behavior of repositories
         when(userRepository.findByUsername("Tom")).thenReturn(Optional.empty());  // User does not exist
         when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(role)); // Role exists
         when(userRepository.save(any(User.class))).thenReturn(user);
@@ -54,11 +54,33 @@ class UserServiceTest {
         // Act
         var registeredUser = userService.registerUser("Tom", "1234ojd", "ROLE_USER");
 
-        // Assert using AssertJ
         assertThat(registeredUser).isNotNull();
         assertThat(registeredUser.getRoles()).extracting("name").containsExactly("ROLE_USER");
 
-        // Verify that the save method was called exactly once
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("when user registers, system encode user password successfully")
+    public void whenUserRegisters_ThenSystemEncodesUserPasswordSuccessfully() {
+        // Arrange
+        var user = new User();
+        user.setUsername("Tom");
+        user.setPassword("encoded_password");
+
+        var role = new Role();
+        role.setName("ROLE_USER");
+        user.setRoles(Set.of(role));
+
+        when(passwordEncoder.encode("1234ojd")).thenReturn("encoded_password");
+        when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(role)); // Role exists
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        // Act
+        var registeredUser = userService.registerUser("Tom", "1234ojd", "ROLE_USER");
+
+        assertThat(registeredUser.getPassword()).isEqualTo("encoded_password");
+
         verify(userRepository, times(1)).save(any(User.class));
     }
 
