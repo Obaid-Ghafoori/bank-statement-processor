@@ -27,14 +27,14 @@ public class UserService {
     @Transactional
     public User registerUser(String username, String password, String roleName) {
         if (userRepository.findByUsername(username).isPresent()) {
-            throw new IllegalArgumentException("User already exists");
+            throw new IllegalArgumentException(String.format("User already exists with username: %s", username));
         }
 
         var user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
 
-        var role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException("Role not found"));
+        var role = roleRepository.findByName(roleName).orElseThrow(() -> new RuntimeException(String.format("Role does not exist: %s", roleName)));
         user.setRoles(new HashSet<>(Set.of(role)));
         return userRepository.save(user);
     }

@@ -106,4 +106,20 @@ class UserServiceTest {
         verify(userRepository, never()).save(any(User.class));
     }
 
+    @Test
+    @DisplayName("when role does not exist, system throws exception")
+    public void whenRoleDoesNotExist_SystemThrowsException() {
+        // Arrange
+        when(userRepository.findByUsername("Tom")).thenReturn(Optional.empty());
+        when(roleRepository.findByName("ROLE_UNKNOWN")).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> userService.registerUser("Tom", "1234ojd", "ROLE_UNKNOWN"))
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Role does not exist: ROLE_UNKNOWN");
+
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+
 }
