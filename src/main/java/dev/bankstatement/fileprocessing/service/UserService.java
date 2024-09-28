@@ -4,6 +4,7 @@ import dev.bankstatement.fileprocessing.model.User;
 import dev.bankstatement.fileprocessing.repository.RoleRepository;
 import dev.bankstatement.fileprocessing.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class UserService {
 
 
     @Transactional
-    public User registerUser(String username, String password, String roleName) {
+    public User registerUser(@NonNull String username, @NonNull  String password, @NonNull String roleName) {
         if (userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException(String.format("User already exists with username: %s", username));
         }
