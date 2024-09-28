@@ -29,23 +29,23 @@ class UserServiceTest {
     private BCryptPasswordEncoder passwordEncoder;
     @InjectMocks
     private UserService userService;
+    private User user;
+    private Role role;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        user = new User();
+        user.setUsername("Tom");
+        user.setPassword("encoded_password");
+        role = new Role();
+        role.setName("ROLE_USER");
+        user.setRoles(Set.of(role));
     }
 
     @Test
     @DisplayName("when user does not exist, system registers with role successfully")
     public void whenUserDoesNotExist_ThenSystemRegistersUserWithRoleSuccessfully() {
-        // Arrange
-        var user = new User();
-        user.setUsername("Tom");
-        user.setPassword("encoded_password");
-
-        var role = new Role();
-        role.setName("ROLE_USER");
-        user.setRoles(Set.of(role));
 
         // Mocking the behavior of repositories
         when(userRepository.findByUsername("Tom")).thenReturn(Optional.empty());  // User does not exist
@@ -65,13 +65,6 @@ class UserServiceTest {
     @DisplayName("when user registers, system encode user password successfully")
     public void whenUserRegisters_ThenSystemEncodesUserPasswordSuccessfully() {
         // Arrange
-        var user = new User();
-        user.setUsername("Tom");
-        user.setPassword("encoded_password");
-
-        var role = new Role();
-        role.setName("ROLE_USER");
-        user.setRoles(Set.of(role));
 
         when(passwordEncoder.encode("1234ojd")).thenReturn("encoded_password");
         when(roleRepository.findByName("ROLE_USER")).thenReturn(Optional.of(role)); // Role exists
@@ -88,14 +81,7 @@ class UserServiceTest {
     @Test
     @DisplayName("when user already exists, system throws exception")
     public void whenUserAlreadyExists_SystemThrowsException() {
-        // Arrange
-        User existingUser = new User();
-        existingUser.setUsername("Tom");
-        Role role = new Role();
-        role.setName("ROLE_USER");
-        existingUser.setRoles(Set.of(role));
-
-        when(userRepository.findByUsername("Tom")).thenReturn(Optional.of(existingUser));  // User already exists
+        when(userRepository.findByUsername("Tom")).thenReturn(Optional.of(user));  // User already exists
 
         // Act & Assert
         assertThatThrownBy(() -> userService.registerUser("Tom", "1234ojd", "ROLE_USER"))
