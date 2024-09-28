@@ -40,8 +40,8 @@ build/
 ### ENV ###
 .env
 
-application.properties
-.application.properties
+application-dev.properties
+#.application.properties
 note.md
 note.txt
 
