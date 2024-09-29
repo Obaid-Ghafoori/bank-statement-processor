@@ -9,19 +9,13 @@ on:
       - main
 
 jobs:
-  lint:
+  code-quality-check:
     name: Code Quality Check (Checkstyle)
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Set up Java 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
 
       - name: Cache Maven dependencies
         uses: actions/cache@v3
@@ -32,13 +26,15 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies
-        run: mvn install -DskipTests
+        run: ./mvnw install
 
       - name: Run Checkstyle
-        run: mvn checkstyle:check
+        run: ./mvnw checkstyle:check
 
-      - name: Handle errors
+      - name: Handle Checkstyle Errors
         if: failure()
         run: |
-          echo "Error occurred during code quality check"
-          echo "Please check the logs for more information"
+          echo "Checkstyle found issues in the code. Please fix the errors."
+          echo "Checkstyle Report:"
+          cat target/checkstyle-result.xml || echo "No report available"
+          exit 1

@@ -1,11 +1,13 @@
 package dev.bankstatement.fileprocessing.config;
 
-import io.jsonwebtoken.*;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Component;
-
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
+
 
 /**
  * Provides functionality for generating, resolving, and validating JSON Web Tokens (JWTs) used for authentication.

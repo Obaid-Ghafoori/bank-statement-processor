@@ -1,7 +1,10 @@
 package dev.bankstatement.fileprocessing.controller;
 
-import dev.bankstatement.fileprocessing.config.JwtTokenProvider;
-import dev.bankstatement.fileprocessing.model.User;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import dev.bankstatement.fileprocessing.config.JwtTokenProvider;
+import dev.bankstatement.fileprocessing.model.User;
+
 
 /**
  * REST controller for handling authentication-related requests.
@@ -21,8 +24,8 @@ import java.util.Map;
 @RequestMapping("/auth")
 public sealed abstract class AuthController permits PasswordResetController {
 
-    private JwtTokenProvider jwtTokenProvider;
-    private AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManager authenticationManager;
 
     /**
      * Constructs an instance of the AuthController class.
