@@ -23,11 +23,29 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Validate Maven project
-        run: mvn validate
+        run: |
+          mvn validate
+          if [ $? -ne 0 ]; then
+            echo "Maven validation failed"
+            exit 1
+          fi
 
       - name: Build with Maven
-        run: mvn clean package
+        run: |
+          mvn clean package
+          if [ $? -ne 0 ]; then
+            echo "Maven build failed"
+            exit 1
+          fi
 
   test:
     name: Run Tests
@@ -43,8 +61,26 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Install dependencies
-        run: ./mvnw install
+        run: |
+          ./mvnw install
+          if [ $? -ne 0 ]; then
+            echo "Maven install failed"
+            exit 1
+          fi
 
       - name: Run tests
-        run: ./mvnw test
+        run: |
+          ./mvnw test
+          if [ $? -ne 0 ]; then
+            echo "Maven test failed"
+            exit 1
+          fi
