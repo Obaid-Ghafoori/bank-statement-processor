@@ -33,15 +33,15 @@ build/
 .vscode/
 
 ### mvn ###
-.mvn/
-mvnw
-mvnw.cmd
+#.mvn/
+#mvnw
+#mvnw.cmd
 
 ### ENV ###
 .env
 
-application.properties
-.application.properties
+application-dev.properties
+#.application.properties
 note.md
 note.txt
 
