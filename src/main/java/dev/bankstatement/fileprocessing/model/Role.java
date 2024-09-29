@@ -1,11 +1,11 @@
 package dev.bankstatement.fileprocessing.model;
 
+import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 
 @Entity
 @Table(name = "roles")

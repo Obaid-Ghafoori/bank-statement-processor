@@ -1,10 +1,10 @@
 package dev.bankstatement.fileprocessing.controller;
 
+import org.springframework.security.authentication.AuthenticationManager;
+
 import dev.bankstatement.fileprocessing.config.JwtTokenProvider;
-import dev.bankstatement.fileprocessing.service.UserService;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.security.authentication.AuthenticationManager;
 
 /**
  * This class extends the AuthController and provides a password reset endpoint.

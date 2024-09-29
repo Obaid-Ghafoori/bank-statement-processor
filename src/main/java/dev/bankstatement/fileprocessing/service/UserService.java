@@ -1,17 +1,19 @@
 package dev.bankstatement.fileprocessing.service;
 
-import dev.bankstatement.fileprocessing.model.User;
-import dev.bankstatement.fileprocessing.repository.RoleRepository;
-import dev.bankstatement.fileprocessing.repository.UserRepository;
-import lombok.AllArgsConstructor;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import dev.bankstatement.fileprocessing.model.User;
+import dev.bankstatement.fileprocessing.repository.RoleRepository;
+import dev.bankstatement.fileprocessing.repository.UserRepository;
+import lombok.AllArgsConstructor;
+
 
 @Service
 @AllArgsConstructor

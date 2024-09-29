@@ -1,9 +1,10 @@
 package dev.bankstatement.fileprocessing.controller;
 
-import dev.bankstatement.fileprocessing.service.UserService;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import dev.bankstatement.fileprocessing.service.UserService;
+import lombok.AllArgsConstructor;
 
 /**
  * This class provides user related endpoint.
