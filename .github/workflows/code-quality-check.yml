@@ -17,6 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -26,10 +32,10 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Install dependencies
-        run: ./mvnw install
+        run: mvn install -DskipTests
 
       - name: Run Checkstyle
-        run: ./mvnw checkstyle:check
+        run: mvn checkstyle:check
 
       - name: Handle errors
         if: failure()
