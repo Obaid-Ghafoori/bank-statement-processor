@@ -153,7 +153,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!--&lt;!&ndash;  Checkstyle Plugin for import order check &ndash;&gt;-->
+            <!-- Checkstyle Plugin for import order check &ndash;&gt;-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
