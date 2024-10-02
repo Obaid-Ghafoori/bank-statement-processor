@@ -3,6 +3,7 @@ package dev.bankstatement.fileprocessing.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import dev.bankstatement.fileprocessing.model.User;
 
@@ -14,6 +15,7 @@ import dev.bankstatement.fileprocessing.model.User;
  *
  * @author Obaid
  */
+@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     /**
      * Finds a user by their username.

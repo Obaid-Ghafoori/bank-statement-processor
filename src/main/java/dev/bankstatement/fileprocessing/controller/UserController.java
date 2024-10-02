@@ -24,7 +24,7 @@ public class UserController {
                                           @RequestParam String role) {
         try {
             userService.registerUser(username, password, role);
-            return ResponseEntity.ok("User registered successfully ");
+            return ResponseEntity.ok("User registered successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
