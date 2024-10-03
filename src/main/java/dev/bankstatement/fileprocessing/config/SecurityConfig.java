@@ -41,10 +41,13 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/welcome", "/api/auth/register", "/login").permitAll() // Public routes
-                .requestMatchers("/admin/**").hasRole("ADMIN") // Only for ADMIN role
-                .anyRequest().authenticated() // All other routes require authentication
-        ).formLogin(form -> form.loginPage("/login").permitAll()).logout(logout -> logout.permitAll());
+        http.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/welcome", "/api/auth/register", "/auth/login").permitAll() // Public routes
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // Only for ADMIN role
+                        .anyRequest().authenticated())
+                .formLogin(form -> form.loginPage("/login").permitAll())
+                .logout(logout -> logout.permitAll());
         return http.build();
     }
 
@@ -68,9 +71,15 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         // In-memory user details, can be replaced with JDBC, LDAP, etc.
-        UserDetails user = User.builder().username("user").password(passwordEncoder().encode("password")).roles("USER").build();
+        UserDetails user = User.builder()
+                .username("user")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER").build();
 
-        UserDetails admin = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password(passwordEncoder().encode("admin"))
+                .roles("ADMIN").build();
 
         return new InMemoryUserDetailsManager(user, admin);
     }
@@ -89,19 +98,18 @@ public class SecurityConfig {
      *             settings for the application. It provides access to shared security
      *             objects like {@link AuthenticationManagerBuilder}.
      * @return an instance of {@link AuthenticationManager} configured with the in-memory
-     *         user for authentication.
+     * user for authentication.
      * @throws Exception if an error occurs while building the authentication manager.
      */
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        var authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        var authManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
 
-        authenticationManagerBuilder
-                .inMemoryAuthentication()
-                .withUser("user")
-                .password(passwordEncoder().encode("password"))
-                .roles("USER");
-        return authenticationManagerBuilder.build();
+        authManagerBuilder
+                .userDetailsService(userDetailsService())
+                .passwordEncoder(passwordEncoder());
+
+        return authManagerBuilder.build();
     }
 }
