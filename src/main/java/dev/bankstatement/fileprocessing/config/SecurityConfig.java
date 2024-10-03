@@ -2,7 +2,10 @@ package dev.bankstatement.fileprocessing.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
  * @author Obaid
  */
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     /**
@@ -69,5 +73,35 @@ public class SecurityConfig {
         UserDetails admin = User.builder().username("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
 
         return new InMemoryUserDetailsManager(user, admin);
+    }
+
+    /**
+     * Configures an {@link AuthenticationManager} bean for managing authentication.
+     * <p>
+     * This method builds an {@link AuthenticationManager} using an
+     * {@link AuthenticationManagerBuilder}. For demonstration purposes, it creates an
+     * in-memory user with a hardcoded username and password. In a production environment,
+     * it is recommended to implement a custom {@link UserDetailsService} for user
+     * authentication from a database or another user store.
+     * </p>
+     *
+     * @param http the {@link HttpSecurity} object that is used to configure the security
+     *             settings for the application. It provides access to shared security
+     *             objects like {@link AuthenticationManagerBuilder}.
+     * @return an instance of {@link AuthenticationManager} configured with the in-memory
+     *         user for authentication.
+     * @throws Exception if an error occurs while building the authentication manager.
+     */
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        var authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+
+        authenticationManagerBuilder
+                .inMemoryAuthentication()
+                .withUser("user")
+                .password(passwordEncoder().encode("password"))
+                .roles("USER");
+        return authenticationManagerBuilder.build();
     }
 }
