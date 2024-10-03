@@ -22,7 +22,7 @@ import dev.bankstatement.fileprocessing.model.User;
  */
 @RestController
 @RequestMapping("/auth")
-public sealed abstract class AuthController permits PasswordResetController {
+public sealed class AuthController permits PasswordResetController {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManager authenticationManager;
