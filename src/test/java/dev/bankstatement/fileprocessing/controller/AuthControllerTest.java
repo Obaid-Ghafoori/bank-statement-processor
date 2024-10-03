@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.util.List;
@@ -56,6 +57,25 @@ class AuthControllerTest {
         // Assert
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).containsEntry("token", "mockToken");
+    }
+
+    @Test
+    @DisplayName("User login should fail with invalid credentials")
+    void userLoginShouldFailWithInvalidCredentials() {
+        // Arrange
+        User user = new User();
+        user.setUsername("invalidUser");
+        user.setPassword("wrong_pass");
+
+        var authToken = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        doThrow(new BadCredentialsException("Invalid username or password")).when(authenticationManager).authenticate(authToken);
+
+        // Act
+        ResponseEntity<Map<String, String>> response = authController.login(user);
+
+        // Assert
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+        assertThat(response.getBody()).containsEntry("error", "Invalid username or password");
     }
 
 }
